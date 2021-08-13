@@ -13,8 +13,8 @@ pipeline {
 
    environment {
        //Use Pipeline Utility Steps plugin to read information from pom.xml into environment variables
-       ARTIFACT_ID = "spring-boot-kubernetes-4.1.0"
-       ARTIFACT_VERSION = ""
+       ARTIFACT_ID = "latest"
+       ARTIFACT_VERSION = "1"
        DEPLOYMENT= "${params.deployment}"
    }
 
@@ -61,7 +61,6 @@ pipeline {
                 echo IMAGE: ${ARTIFACT_ID}
                 echo VERSION: ${ARTIFACT_VERSION}
                 docker build -f deploy/Dockerfile \
-                --build-arg JAR_FILE=target/${ARTIFACT_ID}-${ARTIFACT_VERSION}.jar \
                 --build-arg IMAGE_VERSION=${ARTIFACT_VERSION} \
                 -t ${ARTIFACT_ID}:${ARTIFACT_VERSION} .
                 """
