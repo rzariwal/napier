@@ -19,7 +19,7 @@ pipeline {
        REGISTRY = "zariwal/capstone"
        SERVICE_NAME = "spring-boot-kubernetes"
        REPOSITORY_TAG = "${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
-       DOCKERHUB = 'DockerHub'
+       DOCKERHUB = 'dockerhub_credentials'
        PROJECT_NAME = 'spring-boot-kubernetes'
    }
 
@@ -75,6 +75,16 @@ pipeline {
             steps {
                 script {
                     dockerImage = docker.build(registry +":$BUILD_NUMBER", "-f deploy/Dockerfile .")
+                }
+            }
+        }
+
+        stage('Push our image dockerhub') {
+            steps {
+                script {
+                    docker.withRegistry( '', DOCKERHUB ) {
+                        dockerImage.push()
+                    }
                 }
             }
         }
