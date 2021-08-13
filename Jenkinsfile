@@ -13,8 +13,8 @@ pipeline {
 
    environment {
        //Use Pipeline Utility Steps plugin to read information from pom.xml into environment variables
-       ARTIFACT_ID = "latest"
-       ARTIFACT_VERSION = "1"
+       ARTIFACT_ID = "spring-boot-kubernetes-4.1.0"
+       ARTIFACT_VERSION = ""
        DEPLOYMENT= "${params.deployment}"
    }
 
