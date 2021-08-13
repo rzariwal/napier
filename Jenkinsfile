@@ -52,7 +52,6 @@ pipeline {
 
         stage('Building our docker image') {
             steps {
-                sh 'docker image prune -a --force'
                 script {
                     dockerImage = docker.build(registry +":$BUILD_NUMBER", "-f deploy/Dockerfile .")
                 }
@@ -81,7 +80,7 @@ pipeline {
         }
     	stage ("Dynamic Analysis - DAST with OWASP ZAP") {
 			steps {
-				sh "docker run --network host -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.100.43:8080 || true"
+				sh "docker run --network host -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.100.43:31000 || true"
 			}
 	    }
 
