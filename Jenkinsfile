@@ -73,11 +73,9 @@ pipeline {
         }
         stage('Building our docker image') {
             steps {
-                dir('deploy'){
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build("registry + ":$BUILD_NUMBER"", "-f deploy/Dockerfile")
                 }
-                              }
             }
         }
     }
