@@ -1,16 +1,6 @@
 pipeline {
    agent any
 
-       parameters {
-           booleanParam(defaultValue: false, description: 'Do you want to deploy the application?', name: 'deployment')
-       }
-
-       environment {
-           ARTIFACT_ID = readMavenPom().getArtifactId()
-           ARTIFACT_VERSION = readMavenPom().getVersion()
-           DEPLOYMENT= "${params.deployment}"
-       }
-
     stages {
         stage('List pods') {
             steps {
@@ -22,6 +12,7 @@ pipeline {
                 }
             }
         }
+
         stage ('OWASP Dependency-Check Vulnerabilities') {
               steps {
                   dependencyCheck additionalArguments: '''
@@ -32,6 +23,19 @@ pipeline {
 
                   dependencyCheckPublisher pattern: 'dependency-check-report.xml'
               }
+        }
+
+        stage ('Build Application') {
+            steps {
+                sh 'mvn clean install'
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
+                }
+                failure {
+                    sh 'echo Build failed, Sending notification....'
+                }
         }
     }
 }
