@@ -23,6 +23,7 @@ pipeline {
        PROJECT_NAME = 'spring-boot-kubernetes'
    }
 
+    stages {
         stage ('OWASP Dependency-Check Vulnerabilities') {
               steps {
                   dependencyCheck additionalArguments: '''
