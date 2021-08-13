@@ -40,7 +40,7 @@ items:
         spec:
           containers:
             - name: spring-boot-kubernetes
-              image: docker.io/zariwal/capstone:36
+              image: docker.io/${REGISTRY}:$BUILD_NUMBER
               imagePullPolicy: IfNotPresent
               resources:
                 limits:
