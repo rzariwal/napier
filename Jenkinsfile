@@ -4,7 +4,7 @@ node {
                     serverUrl: 'https://192.168.100.43:6443',
                     namespace: 'napier'
                     ]) {
-      sh 'kubectl get pods'
+      sh 'kubectl get all'
     }
   }
 }
