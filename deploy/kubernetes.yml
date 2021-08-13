@@ -40,7 +40,7 @@ items:
         spec:
           containers:
             - name: spring-boot-kubernetes
-              image: spring-boot-kubernetes:4.1.0
+              image: docker.io/${REGISTRY}:$BUILD_NUMBER
               imagePullPolicy: IfNotPresent
               resources:
                 limits:
