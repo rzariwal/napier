@@ -16,6 +16,11 @@ pipeline {
        ARTIFACT_ID = "latest"
        ARTIFACT_VERSION = "1"
        DEPLOYMENT= "${params.deployment}"
+       REGISTRY = "zariwal/capstone"
+       SERVICE_NAME = "spring-boot-kubernetes"
+       REPOSITORY_TAG = "${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
+       DOCKERHUB = 'DockerHub'
+       PROJECT_NAME = 'spring-boot-kubernetes'
    }
 
     stages {
@@ -64,6 +69,14 @@ pipeline {
                 --build-arg IMAGE_VERSION=${ARTIFACT_VERSION} \
                 -t ${ARTIFACT_ID}:${ARTIFACT_VERSION} .
                 """
+            }
+        }
+        stage('Building our docker image') {
+            steps {
+                cd deploy
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
     }
