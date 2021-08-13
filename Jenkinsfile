@@ -23,18 +23,6 @@ pipeline {
        PROJECT_NAME = 'spring-boot-kubernetes'
    }
 
-    stages {
-        stage('List pods') {
-            steps {
-                withKubeConfig([credentialsId: 'kubernetes_credentials',
-                        serverUrl: 'https://192.168.100.43:6443',
-                        namespace: 'napier'
-                        ]) {
-                        sh 'kubectl get all'
-                }
-            }
-        }
-
         stage ('OWASP Dependency-Check Vulnerabilities') {
               steps {
                   dependencyCheck additionalArguments: '''
@@ -60,19 +48,10 @@ pipeline {
                 }
             }
         }
-        stage ('Build Docker Image') {
-            steps {
-                sh """
-                echo IMAGE: ${ARTIFACT_ID}
-                echo VERSION: ${ARTIFACT_VERSION}
-                docker build -f deploy/Dockerfile \
-                --build-arg IMAGE_VERSION=${ARTIFACT_VERSION} \
-                -t ${ARTIFACT_ID}:${ARTIFACT_VERSION} .
-                """
-            }
-        }
+
         stage('Building our docker image') {
             steps {
+                sh 'docker image prune -a --force'
                 script {
                     dockerImage = docker.build(registry +":$BUILD_NUMBER", "-f deploy/Dockerfile .")
                 }
@@ -89,7 +68,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to kubernetes') {
             steps {
                 withKubeConfig([credentialsId: 'kubernetes_credentials',
                         serverUrl: 'https://192.168.100.43:6443',
@@ -99,5 +78,11 @@ pipeline {
                 }
             }
         }
+    	stage ("Dynamic Analysis - DAST with OWASP ZAP") {
+			steps {
+				sh "docker run --network host -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.100.43:8080 || true"
+			}
+	    }
+
     }
 }
