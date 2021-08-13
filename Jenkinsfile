@@ -1,5 +1,16 @@
 pipeline {
    agent any
+
+       parameters {
+           booleanParam(defaultValue: false, description: 'Do you want to deploy the application?', name: 'deployment')
+       }
+
+       environment {
+           ARTIFACT_ID = readMavenPom().getArtifactId()
+           ARTIFACT_VERSION = readMavenPom().getVersion()
+           DEPLOYMENT= "${params.deployment}"
+       }
+
     stages {
         stage('List pods') {
             steps {
