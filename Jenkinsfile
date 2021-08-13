@@ -1,6 +1,6 @@
 pipeline {
    agent any
-
+stages {
   stage('List pods') {
     withKubeConfig([credentialsId: 'kubernetes_credentials',
                     serverUrl: 'https://192.168.100.43:6443',
@@ -9,4 +9,5 @@ pipeline {
       sh 'kubectl get all'
     }
   }
+}
 }
