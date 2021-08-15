@@ -45,7 +45,7 @@ pipeline {
             }
             steps {
                   withSonarQubeEnv('SonarQube') {
-                      sh "${scannerHome}/bin/sonar-scanner -Dsonar.exclusions=src/**/* -Dsonar.userHome=`pwd`/.sonar -Dsonar.projectKey=$PROJECT_NAME -X"
+                      sh "${scannerHome}/bin/sonar-scanner -Dsonar.exclusions=src/**/*,dependency-check-report*.* -Dsonar.userHome=`pwd`/.sonar -Dsonar.projectKey=$PROJECT_NAME -X"
                   }
             }
         }
