@@ -31,6 +31,8 @@ pipeline {
                         -s "./"
                         -f "ALL"
                         --disableAssembly
+                        --disableNodeJS
+                        --disableYarnAudit
                         --prettyPrint''', odcInstallation: 'Default'
 
                   dependencyCheckPublisher pattern: 'dependency-check-report.xml'
