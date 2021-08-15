@@ -30,6 +30,7 @@ pipeline {
                         -o "./"
                         -s "./"
                         -f "ALL"
+                        --disableAssembly
                         --prettyPrint''', odcInstallation: 'Default'
 
                   dependencyCheckPublisher pattern: 'dependency-check-report.xml'
