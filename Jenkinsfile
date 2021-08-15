@@ -36,6 +36,17 @@ pipeline {
               }
         }
 
+        stage('Sonarqube Analysis') {
+              environment {
+                  scannerHome = tool 'SonarQube'
+            }
+            steps {
+                  withSonarQubeEnv('SonarQube') {
+                      sh "${scannerHome}/bin/sonar-scanner -Dsonar.userHome=`pwd`/.sonar -Dsonar.projectKey=$PROJECT_NAME -X"
+                  }
+            }
+        }
+
         stage ('Build Application') {
             steps {
                 sh 'mvn clean install'
