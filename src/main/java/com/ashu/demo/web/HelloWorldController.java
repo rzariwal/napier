@@ -13,7 +13,7 @@ public class HelloWorldController {
 
     @GetMapping
     public String hi() {
-        return "Hello Mate - " + getIpAddress();
+        return "Hello Muni - " + getIpAddress();
     }
 
     private String getIpAddress() {
