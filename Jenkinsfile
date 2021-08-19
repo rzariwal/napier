@@ -85,8 +85,7 @@ pipeline {
         stage('Container Image Scan') {
            steps {
                 sh 'echo "docker.io/$REGISTRY:$BUILD_NUMBER `pwd`/deploy/Dockerfile" > anchore_images'
-                anchore name: 'anchore_images'
-                anchore forceAnalyze: 'True'
+                anchore name: 'anchore_images', forceAnalyze: 'True'
            }
         }
 
