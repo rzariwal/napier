@@ -82,6 +82,13 @@ pipeline {
             }
         }
 
+        stage('Container Image Scan') {
+           steps {
+                sh 'echo "docker.io/zariwal/capstone:60 `pwd`/deploy/Dockerfile" > anchore_images'
+                anchore name: 'anchore_images'
+           }
+        }
+
         stage('Deploy to kubernetes') {
             steps {
                 withKubeConfig([credentialsId: 'kubernetes_credentials',
@@ -92,6 +99,7 @@ pipeline {
                 }
             }
         }
+
     	stage ("Dynamic Analysis - DAST with OWASP ZAP") {
 			steps {
 				sh "docker run --network host -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.100.43:31000 || true"
