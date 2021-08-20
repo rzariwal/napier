@@ -16,10 +16,13 @@ pipeline {
        ARTIFACT_ID = "latest"
        ARTIFACT_VERSION = "1"
        DEPLOYMENT= "${params.deployment}"
-       REGISTRY = "zariwal/capstone"
+       //REGISTRY = "zariwal/capstone"
+       REGISTRY = "docker-private"
+       NEXUS_REGISTRY = "http://repo.napierhealthcare.com:8083/"
        SERVICE_NAME = "spring-boot-kubernetes"
        REPOSITORY_TAG = "${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
        DOCKERHUB = 'dockerhub_credentials'
+       NEXUS = 'nexus_credentials'
        PROJECT_NAME = 'spring-boot-kubernetes'
    }
 
@@ -75,7 +78,7 @@ pipeline {
         stage('Push our image dockerhub') {
             steps {
                 script {
-                    docker.withRegistry( '', DOCKERHUB ) {
+                    docker.withRegistry( NEXUS_REGISTRY, NEXUS ) {
                         dockerImage.push()
                     }
                 }
