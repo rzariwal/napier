@@ -18,7 +18,7 @@ pipeline {
        DEPLOYMENT= "${params.deployment}"
        //REGISTRY = "zariwal/capstone"
        REGISTRY = "docker-private"
-       NEXUS_REGISTRY = "http://repo.napierhealthcare.com:8083/"
+       NEXUS_REGISTRY = "http://repo.napierhealthcare.com:8083/repository/"
        SERVICE_NAME = "spring-boot-kubernetes"
        REPOSITORY_TAG = "${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
        DOCKERHUB = 'dockerhub_credentials'
